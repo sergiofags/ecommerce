@@ -21,6 +21,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'address',
+        'city',
+        'zip_code',
+        'country',
+        'phone_number',
+        'profile_image',
+        'profile_completed'
     ];
 
     /**
@@ -44,5 +51,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function orders(){
+        return $this->hasMany(Order::class)->with('products')->latest();
+    }
+
+    public function image_path(){
+        if ($this->profile_image){
+            return asset('storage/images/users/'.$this->profile_image);
+        } else {
+            return 'https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg';
+        }
     }
 }
